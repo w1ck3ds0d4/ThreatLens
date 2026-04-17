@@ -1,0 +1,51 @@
+## .NET
+bin/
+obj/
+out/
+*.user
+*.suo
+*.sln.iml
+*.sln.docstates
+
+## VS Code
+.vs/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+## Rider
+.idea/
+*.DotSettings.user
+
+## Secrets / env
+*.env
+appsettings.Local.json
+appsettings.Development.Local.json
+.env.local
+
+## Coverage + test outputs
+TestResults/
+coverage/
+*.coverage
+*.coveragexml
+
+## Aspire manifests / generated
+**/aspire-manifest.json
+**/.aspire/
+
+## OS
+Thumbs.db
+.DS_Store
+
+## Logs
+*.log
+logs/
+
+## NuGet
+packages/
+*.nupkg
+
+## EF migrations build artifacts are fine to commit, but not temp
+Migrations/ApplyMigration.sh

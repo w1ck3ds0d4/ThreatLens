@@ -1,0 +1,13 @@
+title = "ThreatLens Secret Scanning"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "ThreatLens allowlist"
+paths = [
+  '''bin/''',
+  '''obj/''',
+  '''packages/''',
+  '''\.vs/''',
+]

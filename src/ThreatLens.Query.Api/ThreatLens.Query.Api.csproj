@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.3.1" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.15" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ThreatLens.Domain\ThreatLens.Domain.csproj" />
+    <ProjectReference Include="..\ThreatLens.Data\ThreatLens.Data.csproj" />
+    <ProjectReference Include="..\ThreatLens.ServiceDefaults\ThreatLens.ServiceDefaults.csproj" />
+  </ItemGroup>
+
+</Project>

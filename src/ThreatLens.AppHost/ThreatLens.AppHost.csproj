@@ -1,0 +1,25 @@
+<Project Sdk="Aspire.AppHost.Sdk/9.3.1">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsAspireHost>true</IsAspireHost>
+    <UserSecretsId>517a1da2-a180-4e00-8c55-8ab0a53f1b83</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.AppHost" Version="9.3.1" />
+    <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="9.3.1" />
+    <PackageReference Include="Aspire.Hosting.Redis" Version="9.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ThreatLens.Ingest.Api\ThreatLens.Ingest.Api.csproj" />
+    <ProjectReference Include="..\ThreatLens.Correlator.Worker\ThreatLens.Correlator.Worker.csproj" />
+    <ProjectReference Include="..\ThreatLens.Query.Api\ThreatLens.Query.Api.csproj" />
+    <ProjectReference Include="..\ThreatLens.Dashboard\ThreatLens.Dashboard.csproj" />
+  </ItemGroup>
+
+</Project>
