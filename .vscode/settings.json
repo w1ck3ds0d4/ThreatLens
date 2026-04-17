@@ -1,0 +1,15 @@
+{
+  "peacock.color": "#B71C1C",
+  "dotnet.defaultSolution": "ThreatLens.sln",
+  "omnisharp.enableEditorConfigSupport": true,
+  "omnisharp.enableRoslynAnalyzers": true,
+  "editor.formatOnSave": true,
+  "[csharp]": {
+    "editor.defaultFormatter": "ms-dotnettools.csharp",
+    "editor.tabSize": 4
+  },
+  "files.exclude": {
+    "**/bin": true,
+    "**/obj": true
+  }
+}

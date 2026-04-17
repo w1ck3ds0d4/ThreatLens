@@ -1,0 +1,112 @@
+{
+  "version": "0.2.0",
+  "compounds": [
+    {
+      "name": "ThreatLens - Full Stack (Aspire)",
+      "configurations": ["AppHost"],
+      "stopAll": true,
+      "presentation": {
+        "order": 0,
+        "group": "threatlens"
+      }
+    }
+  ],
+  "configurations": [
+    {
+      "name": "AppHost",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/ThreatLens.AppHost/bin/Debug/net9.0/ThreatLens.AppHost.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/src/ThreatLens.AppHost",
+      "stopAtEntry": false,
+      "console": "integratedTerminal",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DOTNET_ENVIRONMENT": "Development",
+        "ASPIRE_ALLOW_UNSECURED_TRANSPORT": "true"
+      },
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "Now listening on:\\s+(https?://\\S+)"
+      },
+      "presentation": {
+        "group": "threatlens",
+        "order": 1
+      }
+    },
+    {
+      "name": "Ingest.Api (standalone)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/ThreatLens.Ingest.Api/bin/Debug/net9.0/ThreatLens.Ingest.Api.dll",
+      "cwd": "${workspaceFolder}/src/ThreatLens.Ingest.Api",
+      "console": "integratedTerminal",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "presentation": {
+        "group": "services",
+        "order": 2,
+        "hidden": true
+      }
+    },
+    {
+      "name": "Query.Api (standalone)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/ThreatLens.Query.Api/bin/Debug/net9.0/ThreatLens.Query.Api.dll",
+      "cwd": "${workspaceFolder}/src/ThreatLens.Query.Api",
+      "console": "integratedTerminal",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "presentation": {
+        "group": "services",
+        "order": 3,
+        "hidden": true
+      }
+    },
+    {
+      "name": "Correlator.Worker (standalone)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/ThreatLens.Correlator.Worker/bin/Debug/net9.0/ThreatLens.Correlator.Worker.dll",
+      "cwd": "${workspaceFolder}/src/ThreatLens.Correlator.Worker",
+      "console": "integratedTerminal",
+      "env": {
+        "DOTNET_ENVIRONMENT": "Development"
+      },
+      "presentation": {
+        "group": "services",
+        "order": 4,
+        "hidden": true
+      }
+    },
+    {
+      "name": "Dashboard (standalone)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/ThreatLens.Dashboard/bin/Debug/net9.0/ThreatLens.Dashboard.dll",
+      "cwd": "${workspaceFolder}/src/ThreatLens.Dashboard",
+      "console": "integratedTerminal",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "Now listening on:\\s+(https?://\\S+)"
+      },
+      "presentation": {
+        "group": "services",
+        "order": 5,
+        "hidden": true
+      }
+    }
+  ]
+}
