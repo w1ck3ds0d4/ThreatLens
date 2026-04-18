@@ -7,13 +7,9 @@ out/
 *.sln.iml
 *.sln.docstates
 
-## VS Code
+## VS Code (workspace config is local-only; shared settings live in the parent all-repos workspace file)
 .vs/
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+.vscode/
 
 ## Rider
 .idea/
