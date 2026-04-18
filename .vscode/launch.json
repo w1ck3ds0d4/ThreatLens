@@ -3,7 +3,9 @@
   "compounds": [
     {
       "name": "ThreatLens - Full Stack (Aspire)",
-      "configurations": ["AppHost"],
+      "configurations": [
+        "AppHost"
+      ],
       "stopAll": true,
       "presentation": {
         "order": 0,
@@ -17,9 +19,9 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/ThreatLens.AppHost/bin/Debug/net9.0/ThreatLens.AppHost.dll",
+      "program": "${workspaceFolder:ThreatLens}/src/ThreatLens.AppHost/bin/Debug/net9.0/ThreatLens.AppHost.dll",
       "args": [],
-      "cwd": "${workspaceFolder}/src/ThreatLens.AppHost",
+      "cwd": "${workspaceFolder:ThreatLens}/src/ThreatLens.AppHost",
       "stopAtEntry": false,
       "console": "integratedTerminal",
       "env": {
@@ -33,7 +35,8 @@
       },
       "presentation": {
         "group": "threatlens",
-        "order": 1
+        "order": 1,
+        "hidden": true
       }
     },
     {
@@ -41,8 +44,8 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/ThreatLens.Ingest.Api/bin/Debug/net9.0/ThreatLens.Ingest.Api.dll",
-      "cwd": "${workspaceFolder}/src/ThreatLens.Ingest.Api",
+      "program": "${workspaceFolder:ThreatLens}/src/ThreatLens.Ingest.Api/bin/Debug/net9.0/ThreatLens.Ingest.Api.dll",
+      "cwd": "${workspaceFolder:ThreatLens}/src/ThreatLens.Ingest.Api",
       "console": "integratedTerminal",
       "env": {
         "ASPNETCORE_ENVIRONMENT": "Development"
@@ -58,8 +61,8 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/ThreatLens.Query.Api/bin/Debug/net9.0/ThreatLens.Query.Api.dll",
-      "cwd": "${workspaceFolder}/src/ThreatLens.Query.Api",
+      "program": "${workspaceFolder:ThreatLens}/src/ThreatLens.Query.Api/bin/Debug/net9.0/ThreatLens.Query.Api.dll",
+      "cwd": "${workspaceFolder:ThreatLens}/src/ThreatLens.Query.Api",
       "console": "integratedTerminal",
       "env": {
         "ASPNETCORE_ENVIRONMENT": "Development"
@@ -75,8 +78,8 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/ThreatLens.Correlator.Worker/bin/Debug/net9.0/ThreatLens.Correlator.Worker.dll",
-      "cwd": "${workspaceFolder}/src/ThreatLens.Correlator.Worker",
+      "program": "${workspaceFolder:ThreatLens}/src/ThreatLens.Correlator.Worker/bin/Debug/net9.0/ThreatLens.Correlator.Worker.dll",
+      "cwd": "${workspaceFolder:ThreatLens}/src/ThreatLens.Correlator.Worker",
       "console": "integratedTerminal",
       "env": {
         "DOTNET_ENVIRONMENT": "Development"
@@ -92,8 +95,8 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/ThreatLens.Dashboard/bin/Debug/net9.0/ThreatLens.Dashboard.dll",
-      "cwd": "${workspaceFolder}/src/ThreatLens.Dashboard",
+      "program": "${workspaceFolder:ThreatLens}/src/ThreatLens.Dashboard/bin/Debug/net9.0/ThreatLens.Dashboard.dll",
+      "cwd": "${workspaceFolder:ThreatLens}/src/ThreatLens.Dashboard",
       "console": "integratedTerminal",
       "env": {
         "ASPNETCORE_ENVIRONMENT": "Development"
