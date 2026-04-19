@@ -7,10 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.3.1" />
     <PackageReference Include="Aspire.StackExchange.Redis" Version="9.3.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ThreatLens.Data\ThreatLens.Data.csproj" />
     <ProjectReference Include="..\ThreatLens.ServiceDefaults\ThreatLens.ServiceDefaults.csproj" />
   </ItemGroup>
 
