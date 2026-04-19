@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ThreatLens.Data;
@@ -11,9 +12,11 @@ using ThreatLens.Data;
 namespace ThreatLens.Data.Migrations
 {
     [DbContext(typeof(ThreatLensDbContext))]
-    partial class ThreatLensDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260419190120_Users")]
+    partial class Users
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
