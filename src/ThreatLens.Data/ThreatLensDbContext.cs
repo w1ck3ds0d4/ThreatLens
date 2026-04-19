@@ -7,6 +7,7 @@ public class ThreatLensDbContext(DbContextOptions<ThreatLensDbContext> options) 
 {
     public DbSet<LogEvent> LogEvents => Set<LogEvent>();
     public DbSet<CorrelationRule> CorrelationRules => Set<CorrelationRule>();
+    public DbSet<ApiKey> ApiKeys => Set<ApiKey>();
 
     protected override void OnModelCreating(ModelBuilder b)
     {
@@ -24,6 +25,15 @@ public class ThreatLensDbContext(DbContextOptions<ThreatLensDbContext> options) 
             e.HasIndex(x => x.Name).IsUnique();
             e.Property(x => x.Name).HasMaxLength(128).IsRequired();
             e.Property(x => x.Pattern).HasMaxLength(1024).IsRequired();
+        });
+
+        b.Entity<ApiKey>(e =>
+        {
+            e.HasIndex(x => x.KeyHash).IsUnique();
+            e.HasIndex(x => x.KeyPrefix);
+            e.Property(x => x.Name).HasMaxLength(128).IsRequired();
+            e.Property(x => x.KeyHash).HasMaxLength(64).IsRequired();
+            e.Property(x => x.KeyPrefix).HasMaxLength(12).IsRequired();
         });
     }
 }

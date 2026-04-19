@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ThreatLens.Data;
 using ThreatLens.Domain;
+using ThreatLens.Ingest.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,8 @@ builder.AddRedisClient("redis");
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+
+await IngestAuth.InitializeAsync(app);
 
 app.MapDefaultEndpoints();
 if (app.Environment.IsDevelopment())
@@ -32,7 +35,7 @@ app.MapPost("/events", async (IngestRequest req, ThreatLensDbContext db, Cancell
     db.LogEvents.Add(ev);
     await db.SaveChangesAsync(ct);
     return Results.Created($"/events/{ev.Id}", new { ev.Id });
-});
+}).AddEndpointFilter(IngestAuth.RequireKey);
 
 app.MapPost("/events/batch", async (IngestRequest[] reqs, ThreatLensDbContext db, CancellationToken ct) =>
 {
@@ -50,7 +53,7 @@ app.MapPost("/events/batch", async (IngestRequest[] reqs, ThreatLensDbContext db
     db.LogEvents.AddRange(events);
     await db.SaveChangesAsync(ct);
     return Results.Ok(new { count = events.Length });
-});
+}).AddEndpointFilter(IngestAuth.RequireKey);
 
 app.Run();
 
