@@ -1,17 +1,27 @@
+using ThreatLens.Dashboard;
 using ThreatLens.Dashboard.Components;
+using ThreatLens.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
+builder.AddNpgsqlDbContext<ThreatLensDbContext>("threatlens");
 builder.AddRedisClient("redis");
 
-builder.Services.AddHttpClient("query-api", c => c.BaseAddress = new Uri("http+https://query-api"));
+builder.Services.AddSingleton<QueryApiCredential>();
+builder.Services.AddTransient<BearerKeyHandler>();
+builder.Services.AddHttpClient("query-api", c => c.BaseAddress = new Uri("http+https://query-api"))
+    .AddHttpMessageHandler<BearerKeyHandler>();
 builder.Services.AddServiceDiscovery();
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 var app = builder.Build();
+
+app.Services.GetRequiredService<QueryApiCredential>().Key =
+    await DashboardCredential.InitializeAsync(app);
+
 app.MapDefaultEndpoints();
 
 // Configure the HTTP request pipeline.

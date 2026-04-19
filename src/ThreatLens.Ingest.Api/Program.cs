@@ -35,7 +35,7 @@ app.MapPost("/events", async (IngestRequest req, ThreatLensDbContext db, Cancell
     db.LogEvents.Add(ev);
     await db.SaveChangesAsync(ct);
     return Results.Created($"/events/{ev.Id}", new { ev.Id });
-}).AddEndpointFilter(IngestAuth.RequireKey);
+}).AddEndpointFilter(ApiKeyEndpointFilter.RequireKey);
 
 app.MapPost("/events/batch", async (IngestRequest[] reqs, ThreatLensDbContext db, CancellationToken ct) =>
 {
@@ -53,7 +53,7 @@ app.MapPost("/events/batch", async (IngestRequest[] reqs, ThreatLensDbContext db
     db.LogEvents.AddRange(events);
     await db.SaveChangesAsync(ct);
     return Results.Ok(new { count = events.Length });
-}).AddEndpointFilter(IngestAuth.RequireKey);
+}).AddEndpointFilter(ApiKeyEndpointFilter.RequireKey);
 
 app.Run();
 

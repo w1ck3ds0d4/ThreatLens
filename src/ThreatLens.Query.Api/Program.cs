@@ -10,6 +10,12 @@ builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ThreatLensDbContext>();
+    await db.Database.MigrateAsync();
+}
+
 app.MapDefaultEndpoints();
 if (app.Environment.IsDevelopment())
 {
@@ -31,13 +37,13 @@ app.MapGet("/events", async (
     if (!string.IsNullOrWhiteSpace(source)) q = q.Where(e => e.Source == source);
     var items = await q.Take(take).ToListAsync(ct);
     return Results.Ok(items);
-});
+}).AddEndpointFilter(ApiKeyEndpointFilter.RequireKey);
 
 app.MapGet("/events/{id:long}", async (long id, ThreatLensDbContext db, CancellationToken ct) =>
 {
     var ev = await db.LogEvents.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id, ct);
     return ev is null ? Results.NotFound() : Results.Ok(ev);
-});
+}).AddEndpointFilter(ApiKeyEndpointFilter.RequireKey);
 
 app.MapGet("/stats", async (ThreatLensDbContext db, CancellationToken ct) =>
 {
@@ -52,6 +58,6 @@ app.MapGet("/stats", async (ThreatLensDbContext db, CancellationToken ct) =>
     var pending = await db.LogEvents.CountAsync(e => !e.Correlated, ct);
 
     return Results.Ok(new { total, pending, bySeverity });
-});
+}).AddEndpointFilter(ApiKeyEndpointFilter.RequireKey);
 
 app.Run();

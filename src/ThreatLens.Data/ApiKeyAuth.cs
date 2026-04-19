@@ -63,6 +63,52 @@ public static class ApiKeyAuth
         return row;
     }
 
+    /// Return the raw key for a named service credential, creating it (and a
+    /// matching ApiKey row) on the fly if it does not yet exist. Idempotent:
+    /// safe to call from multiple services concurrently; the unique index on
+    /// ApiKey.Name and the ServiceCredential primary key prevent duplicates.
+    public static async Task<string> EnsureServiceCredentialAsync(
+        ThreatLensDbContext db,
+        string name,
+        CancellationToken ct)
+    {
+        var existing = await db.ServiceCredentials.FindAsync([name], ct);
+        if (existing is not null) return existing.RawKey;
+
+        var raw = GenerateKey();
+        var now = DateTimeOffset.UtcNow;
+
+        await using var tx = await db.Database.BeginTransactionAsync(ct);
+        try
+        {
+            db.ApiKeys.Add(new ApiKey
+            {
+                Name = name,
+                KeyHash = HashKey(raw),
+                KeyPrefix = PrefixFor(raw),
+                CreatedAt = now,
+            });
+            db.ServiceCredentials.Add(new ServiceCredential
+            {
+                Name = name,
+                RawKey = raw,
+                CreatedAt = now,
+            });
+            await db.SaveChangesAsync(ct);
+            await tx.CommitAsync(ct);
+            return raw;
+        }
+        catch (DbUpdateException)
+        {
+            await tx.RollbackAsync(ct);
+            // Someone else won the race; re-read.
+            db.ChangeTracker.Clear();
+            var row = await db.ServiceCredentials.FindAsync([name], ct);
+            if (row is null) throw;
+            return row.RawKey;
+        }
+    }
+
     private static bool FixedTimeEquals(string a, string b)
     {
         if (a.Length != b.Length) return false;
