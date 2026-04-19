@@ -10,6 +10,7 @@ public class CorrelatorWorker(
     IServiceScopeFactory scopeFactory) : BackgroundService
 {
     private static readonly TimeSpan PollInterval = TimeSpan.FromSeconds(5);
+    private static readonly TimeSpan MatchTimeout = TimeSpan.FromSeconds(1);
     private static readonly int BatchSize = 200;
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -53,7 +54,25 @@ public class CorrelatorWorker(
         {
             foreach (var rule in rules)
             {
-                if (Regex.IsMatch(ev.Message, rule.Pattern, RegexOptions.IgnoreCase))
+                bool hit;
+                try
+                {
+                    hit = Regex.IsMatch(ev.Message, rule.Pattern, RegexOptions.IgnoreCase, MatchTimeout);
+                }
+                catch (RegexMatchTimeoutException)
+                {
+                    logger.LogWarning(
+                        "Rule {RuleName} timed out against event {EventId}; skipping rule for this event",
+                        rule.Name, ev.Id);
+                    continue;
+                }
+                catch (ArgumentException ex)
+                {
+                    logger.LogWarning(ex, "Rule {RuleName} has an invalid pattern; skipping", rule.Name);
+                    continue;
+                }
+
+                if (hit)
                 {
                     ev.MatchedRule = rule.Name;
                     if (rule.ElevateTo > ev.Severity)
