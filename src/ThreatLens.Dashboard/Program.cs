@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication;
 using ThreatLens.Dashboard;
 using ThreatLens.Dashboard.Components;
 using ThreatLens.Data;
@@ -14,6 +15,9 @@ builder.Services.AddHttpClient("query-api", c => c.BaseAddress = new Uri("http+h
     .AddHttpMessageHandler<BearerKeyHandler>();
 builder.Services.AddServiceDiscovery();
 
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddDashboardAuth();
+
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
@@ -21,6 +25,8 @@ var app = builder.Build();
 
 app.Services.GetRequiredService<QueryApiCredential>().Key =
     await DashboardCredential.InitializeAsync(app);
+
+await DashboardAuth.SeedBootstrapAdminAsync(app);
 
 app.MapDefaultEndpoints();
 
@@ -33,12 +39,18 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseAntiforgery();
 
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+
+app.MapPost("/logout", async (HttpContext ctx) =>
+{
+    await ctx.SignOutAsync(DashboardAuth.SchemeName);
+    return Results.Redirect(DashboardAuth.LoginPath);
+});
 
 app.Run();

@@ -9,6 +9,7 @@ public class ThreatLensDbContext(DbContextOptions<ThreatLensDbContext> options) 
     public DbSet<CorrelationRule> CorrelationRules => Set<CorrelationRule>();
     public DbSet<ApiKey> ApiKeys => Set<ApiKey>();
     public DbSet<ServiceCredential> ServiceCredentials => Set<ServiceCredential>();
+    public DbSet<User> Users => Set<User>();
 
     protected override void OnModelCreating(ModelBuilder b)
     {
@@ -43,6 +44,13 @@ public class ThreatLensDbContext(DbContextOptions<ThreatLensDbContext> options) 
             e.HasKey(x => x.Name);
             e.Property(x => x.Name).HasMaxLength(128);
             e.Property(x => x.RawKey).HasMaxLength(128).IsRequired();
+        });
+
+        b.Entity<User>(e =>
+        {
+            e.HasIndex(x => x.Email).IsUnique();
+            e.Property(x => x.Email).HasMaxLength(256).IsRequired();
+            e.Property(x => x.PasswordHash).HasMaxLength(256).IsRequired();
         });
     }
 }

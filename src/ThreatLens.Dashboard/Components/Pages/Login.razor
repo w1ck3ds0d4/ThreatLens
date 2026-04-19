@@ -1,0 +1,65 @@
+@page "/login"
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.EntityFrameworkCore
+@using ThreatLens.Data
+@using ThreatLens.Domain
+@inject NavigationManager Nav
+@inject ThreatLensDbContext Db
+@inject IHttpContextAccessor Http
+@attribute [AllowAnonymous]
+
+<PageTitle>Sign in - ThreatLens</PageTitle>
+
+<h1>Sign in</h1>
+
+<EditForm Model="@_model" OnValidSubmit="OnSubmit" FormName="login" method="post">
+    <AntiforgeryToken />
+    <div>
+        <label>Email</label>
+        <InputText @bind-Value="_model.Email" autocomplete="username" required />
+    </div>
+    <div>
+        <label>Password</label>
+        <InputText type="password" @bind-Value="_model.Password" autocomplete="current-password" required />
+    </div>
+    @if (!string.IsNullOrEmpty(_error))
+    {
+        <p role="alert" style="color:crimson">@_error</p>
+    }
+    <button type="submit">Sign in</button>
+</EditForm>
+
+@code {
+    [SupplyParameterFromForm]
+    private LoginModel _model { get; set; } = new();
+
+    private string? _error;
+
+    private async Task OnSubmit()
+    {
+        var user = await Db.Users
+            .FirstOrDefaultAsync(u => u.Email == _model.Email && u.Active);
+
+        if (user is null || !PasswordHasher.Verify(_model.Password, user.PasswordHash))
+        {
+            _error = "Invalid email or password.";
+            return;
+        }
+
+        user.LastLoginAt = DateTimeOffset.UtcNow;
+        await Db.SaveChangesAsync();
+
+        var ctx = Http.HttpContext ?? throw new InvalidOperationException("No HttpContext");
+        await ctx.SignInAsync(DashboardAuth.SchemeName, DashboardAuth.BuildPrincipal(user));
+
+        Nav.NavigateTo("/", forceLoad: true);
+    }
+
+    private sealed class LoginModel
+    {
+        public string Email { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+    }
+}
