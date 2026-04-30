@@ -21,7 +21,7 @@ Log aggregation and correlation engine built on .NET Aspire - Postgres, Redis, E
 
 ### Prerequisites
 
-- [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9.0)
+- [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) - Aspire spins up Postgres and Redis as containers
 - (optional) [VS Code](https://code.visualstudio.com/) with the C# Dev Kit extension
 
@@ -107,7 +107,7 @@ curl "http://localhost:{query-port}/stats"
 ```
 ThreatLens/
   ThreatLens.sln
-  global.json                                  Pins .NET 9 SDK
+  global.json                                  Pins .NET 10 SDK
   src/
     ThreatLens.AppHost/                        Aspire orchestrator
       AppHost.cs                               Wires Postgres, Redis, services
