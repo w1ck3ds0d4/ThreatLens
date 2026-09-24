@@ -55,6 +55,12 @@ jobs:
     steps:
       - id: meta
         uses: dependabot/fetch-metadata@v2
+      - name: Wait for required checks to report
+        if: steps.meta.outputs.update-type == 'version-update:semver-patch'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        run: gh pr checks "$PR_URL" --required --watch --interval 20
       - name: Merge when every update in the PR is a patch
         if: steps.meta.outputs.update-type == 'version-update:semver-patch'
         env:
