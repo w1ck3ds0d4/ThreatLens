@@ -64,4 +64,24 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           t="${PR_TITLE#chore: }"
-          gh pr merge "$PR_URL" --squash --subject "(chore) ${t,,} (#$PR_NUMBER)" --body ""
+          subject="(chore) ${t,,} (#$PR_NUMBER)"
+          # needs: [build] only guarantees this workflow's own job is done. "scan / Scan"
+          # comes from the separate security.yml workflow, which the same pull_request
+          # event triggers independently and with no ordering guarantee relative to this
+          # job, and even once it finishes, GitHub's merge-eligibility state (used by the
+          # mergePullRequest GraphQL call inside `gh pr merge`) can lag a check's own
+          # completion by a few minutes (eventual consistency). Retry the merge itself
+          # with backoff so it waits out both the cross-workflow race and the lag, instead
+          # of polling a check that may not exist yet.
+          max_attempts=10
+          delay=20
+          attempt=1
+          until gh pr merge "$PR_URL" --squash --subject "$subject" --body ""; do
+            if [ "$attempt" -ge "$max_attempts" ]; then
+              echo "gh pr merge still failing after $attempt attempts, giving up" >&2
+              exit 1
+            fi
+            echo "merge attempt $attempt failed, required checks may still be running or settling, retrying in ${delay}s" >&2
+            sleep "$delay"
+            attempt=$((attempt + 1))
+          done
