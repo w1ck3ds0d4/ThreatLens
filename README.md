@@ -2,8 +2,6 @@
 
 Log aggregation and correlation engine built on .NET Aspire - Postgres, Redis, EF Core, Blazor. Distributed observability included.
 
----
-
 ## Features
 
 - **Ingest API** - POST `/events` and `/events/batch` to accept log events from any source with severity, host, message, and raw payload
@@ -14,8 +12,6 @@ Log aggregation and correlation engine built on .NET Aspire - Postgres, Redis, E
 - **OpenTelemetry everywhere** - unified traces, metrics, logs across services via Aspire dashboard
 - **EF Core + PostgreSQL** - code-first schema with indexes on timestamp and severity for fast queries
 - **Redis** - wired for future pub/sub between ingest and correlator
-
----
 
 ## Setup
 
@@ -49,8 +45,6 @@ Useful when iterating on a single service. Configure your own Postgres/Redis con
 ```bash
 dotnet run --project src/ThreatLens.Ingest.Api
 ```
-
----
 
 ## Usage
 
@@ -100,9 +94,7 @@ curl "http://localhost:{query-port}/events?limit=50&minSeverity=3"
 curl "http://localhost:{query-port}/stats"
 ```
 
----
-
-## Project Structure
+## Project structure
 
 ```
 ThreatLens/
@@ -130,8 +122,6 @@ ThreatLens/
   tests/
     ThreatLens.Tests/                          xUnit test project
 ```
-
----
 
 ## License
 
