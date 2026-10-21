@@ -7,11 +7,11 @@ and correlation engine). It is not the paid product, so it stays frozen:
 "done" for now means CI and Dependabot both stay green with no scheduled
 feature work, not shipping the two remaining v1 items.
 
-> How this file is used: Claude Project threads build the first unticked item under **Now**, one item per branch and pull request, and tick it in that same PR as `- [x] ... (#PR)`. Daniel owns the order and the lists; threads never add to Now, Next or Later themselves, they propose under **Ideas**.
+> How this file is used: Claude Project threads build the first unticked item under **Now**, one item per branch and pull request, and tick it in that same PR as `- [x] ... (#PR)`. The maintainer owns the order and the lists; threads never add to Now, Next or Later themselves, they propose under **Ideas**.
 
 ## Now
 
-No new features without Daniel's go.
+No new features without the maintainer's go.
 
 - [ ] **Keep CI green**: watch `ci.yml` (restore/build/test) and `security.yml` on every PR; fix a break only if it is caused by a change in this repo. Done when: the last 5 runs on `main` are green.
 - [ ] **Keep Dependabot patched**: merge routine dependency-bump PRs once their own CI passes. Done when: 0 open Dependabot alerts.

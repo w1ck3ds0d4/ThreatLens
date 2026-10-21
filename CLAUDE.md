@@ -38,7 +38,7 @@ every push and PR to `main`. There is no separate lint step.
   `docs`, `refactor`, `test`.
 - ASCII hyphens only, no em dashes or en dashes anywhere.
 - Feature branch per change, PR per branch; do not push to `main` directly.
-- Status is **maintain** (see `ROADMAP.md`): no new feature work without Daniel's go, keep CI and
+- Status is **maintain** (see `ROADMAP.md`): no new feature work without the maintainer's go, keep CI and
   Dependabot green.
 
 ## Do not read
